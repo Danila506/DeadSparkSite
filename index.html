@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="ru">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#151916"><meta name="description" content="Dead Spark — 2D survival-action в заснеженном постапокалиптическом мире. Исследуй, собирай, строй и выживай в одиночку или вместе."><title>Dead Spark — пока тлеет искра</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="map-zoom.css"><script src="app.js" defer></script></head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#151916"><meta name="description" content="Dead Spark — 2D survival-action в заснеженном постапокалиптическом мире. Исследуй, собирай, строй и выживай в одиночку или вместе."><title>Dead Spark — пока тлеет искра</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="map-zoom.css"><link rel="stylesheet" href="account.css"><script src="app.js" defer></script><script type="module" src="account.js"></script></head>
 <body>
-<header class="header"><a class="brand" href="#home" aria-label="Dead Spark — главная"><span class="spark">✳</span> DEAD SPARK<span class="brand-sub">SURVIVAL / ACTION</span></a><nav aria-label="Основная навигация"><a href="#about">Об игре</a><a href="#world">Мир</a><a href="#coop">Кооператив</a></nav><a class="nav-cta" href="#start">Войти в мир <span>↗</span></a></header>
+<header class="header"><a class="brand" href="#home" aria-label="Dead Spark — главная"><span class="spark">✳</span> DEAD SPARK<span class="brand-sub">SURVIVAL / ACTION</span></a><nav aria-label="Основная навигация"><a href="#about">Об игре</a><a href="#world">Мир</a><a href="#coop">Кооператив</a></nav><div class="header-actions"><button id="account-button" class="nav-cta" type="button" aria-haspopup="dialog" aria-controls="account-dialog">Вход / Регистрация ↗</button><a class="nav-cta" href="#start">Об игре <span>↗</span></a></div></header>
 <main>
 <section class="hero" id="home"><div class="hero-map" role="img" aria-label="Снежная карта Dead Spark: заброшенные дома, дороги и лес"></div><div class="snow" aria-hidden="true"></div><div class="hero-content"><div class="eyebrow"><i></i> 2D SURVIVAL В МИРЕ ПОСЛЕ КАТАСТРОФЫ</div><h1>МИР ПОГАС.<br>ТЫ ЕЩЁ <em>НЕТ.</em></h1><p>Холод снаружи. Последний патрон в кармане.<br>И целый мир, в котором ещё можно выжить.</p><div class="hero-actions"><a class="button" href="#world">Исследовать мир <span>↗</span></a><button class="text-button" data-open="intro"><span class="play">▶</span> Что такое Dead Spark</button></div><div class="hero-meta"><span>PC / ANDROID</span><b>+</b><span>ОДИНОЧНАЯ ИГРА / КООПЕРАТИВ</span></div></div><div class="hero-bottom"><span>НЕ ДАЙ ПОГАСНУТЬ ПОСЛЕДНЕЙ ИСКРЕ</span><a href="#about">ЛИСТАЙ ВНИЗ ↓</a><span class="map-label">ПОЛЕВОЙ ОБЗОР / DEAD SPARK</span></div></section>
 <div class="ticker" aria-hidden="true"><span>ИССЛЕДУЙ</span><b>✳</b><span>СОБИРАЙ</span><b>✳</b><span>СОЗДАВАЙ</span><b>✳</b><span>ВЫЖИВАЙ</span><b>✳</b><span>НЕ ОСТАВАЙСЯ ОДИН</span><b>✳</b></div>
@@ -13,4 +13,29 @@
 </main><footer><a class="brand" href="#home"><span class="spark">✳</span> DEAD SPARK</a><span>ПОКА ТЛЕЕТ ИСКРА — ТЫ ЖИВ.</span><a href="#home">НАВЕРХ ↑</a></footer>
 <dialog id="info-dialog"><button class="close" aria-label="Закрыть окно">×</button><div class="section-kicker">DEAD SPARK / ПОЛЕВАЯ ЗАПИСКА</div><h2 id="dialog-title"></h2><p id="dialog-text"></p><button class="button close-action">Понятно <span>↗</span></button></dialog>
 <dialog id="map-dialog"><button class="close" aria-label="Закрыть карту">×</button><img src="assets/world.png" alt="Полная карта Dead Spark"><p>DEAD SPARK / АВТОРСКАЯ КАРТА</p></dialog>
+<dialog id="account-dialog" aria-labelledby="account-title" aria-describedby="account-status">
+  <button id="account-close" class="close" type="button" aria-label="Закрыть аккаунт">×</button>
+  <div class="section-kicker">DEAD SPARK / АККАУНТ ВЫЖИВШЕГО</div>
+  <h2 id="account-title">С возвращением.</h2>
+  <p class="account-subtitle">Один аккаунт для сайта и игры.</p>
+  <div id="account-tabs" role="group" aria-label="Вход или регистрация">
+    <button type="button" data-auth-mode="signin" aria-pressed="true">Вход</button>
+    <button type="button" data-auth-mode="signup" aria-pressed="false">Регистрация</button>
+  </div>
+  <form id="account-form">
+    <label id="name-field" hidden>Имя выжившего<input name="display_name" type="text" autocomplete="nickname" minlength="2" maxlength="32" required disabled></label>
+    <label id="email-field">Email<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+    <label id="password-field">Пароль<input name="password" type="password" autocomplete="current-password" maxlength="128" required></label>
+    <label id="confirm-field" hidden>Повтори пароль<input name="confirm_password" type="password" autocomplete="new-password" maxlength="128" required disabled></label>
+    <button id="account-submit" class="button" type="submit" disabled>Войти →</button>
+  </form>
+  <button id="account-recover" type="button" class="text-button">Забыли пароль?</button>
+  <div id="account-profile" hidden>
+    <div class="account-details"><strong id="account-name"></strong><p id="account-email"></p><p id="account-confirmed"></p><p>Постоянный ID аккаунта</p><code id="account-id"></code></div>
+    <p class="account-subtitle">Для входа в игру используй тот же email и пароль. Подключение аккаунтов в игровом клиенте готовится.</p>
+    <button id="account-logout" type="button" class="button">Выйти из аккаунта →</button>
+  </div>
+  <p id="account-status" role="status" aria-live="polite"></p>
+  <p class="account-note">Пароль обрабатывает сервис авторизации. Прогресс и предметы игры хранятся отдельно от аккаунта.</p>
+</dialog>
 </body></html>
