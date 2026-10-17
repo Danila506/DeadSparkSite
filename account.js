@@ -1,5 +1,6 @@
 import { authConfig } from './auth-config.js';
 import { isAuthConfigured, createAccountService, authErrorMessage } from './auth-service.mjs';
+import { initializeGameLogin } from './browser-login.mjs';
 
 const dialog = document.querySelector('#account-dialog');
 const form = document.querySelector('#account-form');
@@ -87,7 +88,7 @@ form.addEventListener('submit', async event => {
   try {
     if (mode === 'signin') {
       user = await service.signIn(email.value, password.value);
-      message('Вход выполнен. Этот же аккаунт можно использовать в игре после подключения авторизации.');
+      message('Вход выполнен. Для входа в игру нажми в её меню «Войти через сайт».');
     } else if (mode === 'signup') {
       const result = await service.signUp(email.value, password.value, displayName.value);
       if (result.confirmationRequired) {
@@ -138,6 +139,7 @@ async function initialize() {
     // A cached user is informational only; verify the initial identity with Auth.
     try { user = await service.currentUser(); } catch { user = null; }
     render();
+    initializeGameLogin(client);
     const params = new URLSearchParams(location.search);
     if (params.has('error') || params.has('error_description')) {
       showMode('recover'); dialog.showModal();
