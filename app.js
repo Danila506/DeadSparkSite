@@ -153,6 +153,7 @@ document.querySelectorAll("dialog").forEach((dialog) => {
             button.addEventListener("click", () => dialog.close()),
         );
     dialog.addEventListener("click", (event) => {
+        if (dialog.id === "account-dialog") return;
         if (event.target === dialog) {
             const r = dialog.getBoundingClientRect();
             if (
