@@ -42,7 +42,7 @@ function showMode(next) {
   displayName.disabled = !signup;
   password.minLength = signup || update ? 12 : 1;
   password.autocomplete = signup || update ? 'new-password' : 'current-password';
-  submit.textContent = ({ signin: 'Войти →', signup: 'Создать аккаунт →', recover: 'Отправить письмо →', password: 'Сохранить пароль →' })[next];
+  submit.textContent = ({ signin: 'Войти', signup: 'Создать аккаунт', recover: 'Отправить письмо', password: 'Сохранить пароль' })[next];
   document.querySelectorAll('[data-auth-mode]').forEach(button => {
     button.classList.toggle('active', button.dataset.authMode === next);
     button.setAttribute('aria-pressed', String(button.dataset.authMode === next));
@@ -56,7 +56,7 @@ function render() {
   profile.hidden = !showProfile;
   document.querySelector('#account-tabs').hidden = showProfile || mode === 'password';
   document.querySelector('#account-recover').hidden = showProfile || mode !== 'signin';
-  accountButton.textContent = user ? 'Мой аккаунт ↗' : 'Вход / Регистрация ↗';
+  accountButton.textContent = user ? 'Мой аккаунт' : 'Вход и регистрация';
   if (showProfile) {
     title.textContent = 'На связи, выживший.';
     document.querySelector('#account-name').textContent = user.user_metadata?.display_name || 'Выживший';
