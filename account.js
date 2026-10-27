@@ -13,6 +13,9 @@ const email = form.elements.email;
 const password = form.elements.password;
 const confirmPassword = form.elements.confirm_password;
 const displayName = form.elements.display_name;
+const nameForm = document.querySelector('#name-form');
+const nameInput = document.querySelector('#name-input');
+let shownName = null;
 let mode = 'signin';
 let user = null;
 let service = null;
@@ -59,14 +62,17 @@ function render() {
   accountButton.textContent = user ? 'Мой аккаунт' : 'Вход и регистрация';
   if (showProfile) {
     title.textContent = 'На связи, выживший.';
-    document.querySelector('#account-name').textContent = user.user_metadata?.display_name || 'Выживший';
+    const name = user.user_metadata?.display_name || '';
+    document.querySelector('#account-name').textContent = name || 'Выживший';
+    // Refill the field only when the stored name changes, never over the player's typing.
+    if (shownName !== name) { nameInput.value = name; shownName = name; }
     document.querySelector('#account-email').textContent = user.email || '';
     document.querySelector('#account-id').textContent = user.id;
     document.querySelector('#account-confirmed').textContent = user.email_confirmed_at ? 'Email подтверждён' : 'Email ожидает подтверждения';
   }
   submit.disabled = busy || !service;
   dialog.setAttribute('aria-busy', String(busy));
-  document.querySelectorAll('[data-auth-mode], #account-logout, #account-recover').forEach(button => button.disabled = busy);
+  document.querySelectorAll('[data-auth-mode], #account-logout, #account-recover, #name-submit').forEach(button => button.disabled = busy);
 }
 accountButton.addEventListener('click', () => {
   if (!recoverySession) showMode('signin');
@@ -105,6 +111,17 @@ form.addEventListener('submit', async event => {
     }
     password.value = ''; confirmPassword.value = '';
   } catch (error) { message(authErrorMessage(error), true); }
+  finally { busy = false; render(); }
+});
+nameForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  if (!service || busy || !user) return;
+  busy = true; render(); message('Сохраняем ник…');
+  try {
+    user = await service.updateDisplayName(nameInput.value);
+    shownName = null;
+    message('Ник сохранён. В уже открытой игре он обновится после повторного входа.');
+  } catch (error) { message(authErrorMessage(error), true); nameInput.focus(); }
   finally { busy = false; render(); }
 });
 document.querySelector('#account-logout').addEventListener('click', async () => {

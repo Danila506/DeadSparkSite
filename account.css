@@ -10,6 +10,12 @@
 #account-form input { display: block; width: 100%; min-height: 48px; margin-top: var(--space-xs); padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-muted); border-radius: var(--radius-well); background: var(--color-paper); color: var(--color-ink); font: var(--text-md) var(--font-body); outline: 2px solid transparent; outline-offset: 2px; }
 #account-form input:focus-visible { outline-color: var(--color-focus); }
 #account-form input:disabled { background: var(--color-paper-3); color: var(--color-muted); opacity: 0.55; cursor: not-allowed; }
+#name-form { margin: var(--space-lg) 0; }
+#name-form label { display: block; font-size: var(--text-sm); color: var(--color-ink-2); }
+.name-form__row { display: flex; gap: var(--space-xs); margin-top: var(--space-xs); }
+#name-input { flex: 1; min-width: 0; min-height: 48px; padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-muted); border-radius: var(--radius-well); background: var(--color-paper); color: var(--color-ink); font: var(--text-md) var(--font-body); outline: 2px solid transparent; outline-offset: 2px; }
+#name-input:focus-visible { outline-color: var(--color-focus); }
+#name-submit { margin-top: 0; }
 #account-submit { width: 100%; margin-top: var(--space-xs); }
 #account-dialog .button:disabled { background: var(--color-paper-3); color: var(--color-muted); opacity: 0.55; cursor: not-allowed; transform: none; }
 #account-recover { margin-top: var(--space-xs); font-size: var(--text-sm); }

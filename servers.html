@@ -62,7 +62,8 @@
   <button id="account-recover" type="button" class="text-button">Забыли пароль?</button>
   <div id="account-profile" hidden>
     <div class="account-details"><strong id="account-name"></strong><p id="account-email"></p><p id="account-confirmed"></p><p>Постоянный ID аккаунта</p><code id="account-id"></code></div>
-    <p class="account-subtitle">Для входа в игру используй тот же email и пароль. Подключение аккаунтов в игровом клиенте готовится.</p>
+    <form id="name-form" novalidate><label for="name-input">Никнейм</label><div class="name-form__row"><input id="name-input" name="display_name" type="text" autocomplete="nickname" minlength="2" maxlength="32" required><button id="name-submit" class="button button--ghost" type="submit">Сохранить</button></div></form>
+    <p class="account-subtitle">Этот ник видно в игре после входа через сайт или по email и паролю.</p>
     <button id="account-logout" type="button" class="button">Выйти из аккаунта</button>
   </div>
   <p id="account-status" role="status" aria-live="polite"></p>

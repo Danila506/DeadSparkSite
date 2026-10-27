@@ -14,6 +14,13 @@ export function isAuthConfigured(config) {
   } catch { return false; }
 }
 
+// A nickname is shown in the game and on the site: one line, 2 to 32 characters.
+export function normalizeDisplayName(value) {
+  const name = String(value ?? '').replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2060-\u206f\ufeff]/g, '').replace(/\s+/g, ' ').trim();
+  if ([...name].length < 2 || [...name].length > 32) throw new Error('invalid_display_name');
+  return name;
+}
+
 export function createAccountService(client, redirectTo) {
   const auth = client.auth;
   function checked(result) {
@@ -36,7 +43,7 @@ export function createAccountService(client, redirectTo) {
     async signUp(email, password, displayName) {
       const data = checked(await auth.signUp({
         email: email.trim(), password,
-        options: { emailRedirectTo: redirectTo, data: { display_name: displayName.trim() } },
+        options: { emailRedirectTo: redirectTo, data: { display_name: normalizeDisplayName(displayName) } },
       }));
       return { user: data.user, confirmationRequired: !data.session };
     },
@@ -46,6 +53,12 @@ export function createAccountService(client, redirectTo) {
     async updatePassword(password) {
       // The SDK supplies the authenticated recovery session, never a user ID from the form.
       checked(await auth.updateUser({ password }));
+    },
+    async updateDisplayName(displayName) {
+      // Only the signed-in user's own metadata changes; the SDK supplies the session.
+      const data = checked(await auth.updateUser({ data: { display_name: normalizeDisplayName(displayName) } }));
+      if (!data.user) throw new Error('invalid_session');
+      return data.user;
     },
     async signOut() { checked(await auth.signOut({ scope: 'local' })); },
   };
@@ -62,6 +75,7 @@ export function authErrorMessage(error) {
     signup_disabled: 'Регистрация временно отключена.',
     same_password: 'Новый пароль должен отличаться от прежнего.',
     invalid_session: 'Не удалось подтвердить вход. Попробуй ещё раз.',
+    invalid_display_name: 'Ник должен быть от 2 до 32 символов.',
     session_not_found: 'Сессия истекла. Запроси новую ссылку восстановления.',
   };
   return messages[code] || 'Не удалось выполнить запрос. Проверь соединение и попробуй ещё раз.';
